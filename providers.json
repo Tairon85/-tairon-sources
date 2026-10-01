@@ -34,8 +34,10 @@
     {
       "id": "ilgeniodellostreaming",
       "name": "Il Genio dello Streaming",
-      "current": "",
-      "candidates": [],
+      "current": "https://il-geniodellostreaming.fit",
+      "candidates": [
+        "https://il-geniodellostreaming.fit"
+      ],
       "ct_queries": [
         "ilgeniodellostreaming",
         "geniodellostreaming"
