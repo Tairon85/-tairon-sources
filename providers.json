@@ -1,0 +1,38 @@
+{
+  "providers": [
+    {
+      "id": "altadefinizionex",
+      "name": "AltaDefinizioneX",
+      "current": "https://altadefinizionex.me",
+      "candidates": [
+        "https://altadefinizionex.me"
+      ],
+      "match_any": [
+        "altadefinizione",
+        "altadefinizionex"
+      ]
+    },
+    {
+      "id": "guardaseriex",
+      "name": "GuardaSerieX",
+      "current": "https://guardaseriex.surf",
+      "candidates": [
+        "https://guardaseriex.surf"
+      ],
+      "match_any": [
+        "guardaserie",
+        "guardaseriex"
+      ]
+    },
+    {
+      "id": "ilgeniodellostreaming",
+      "name": "Il Genio dello Streaming",
+      "current": "",
+      "candidates": [],
+      "match_any": [
+        "genio dello streaming",
+        "ilgeniodellostreaming"
+      ]
+    }
+  ]
+}
