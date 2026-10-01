@@ -3,6 +3,7 @@
     {
       "id": "altadefinizionex",
       "name": "AltaDefinizioneX",
+      "base_name": "altadefinizionex",
       "current": "https://altadefinizionex.me",
       "candidates": [
         "https://altadefinizionex.me"
@@ -15,6 +16,7 @@
     {
       "id": "guardaseriex",
       "name": "GuardaSerieX",
+      "base_name": "guardaseriex",
       "current": "https://guardaseriex.surf",
       "candidates": [
         "https://guardaseriex.surf"
@@ -27,11 +29,16 @@
     {
       "id": "ilgeniodellostreaming",
       "name": "Il Genio dello Streaming",
-      "current": "",
-      "candidates": [],
+      "base_name": "il-geniodellostreaming",
+      "current": "https://il-geniodellostreaming.fit",
+      "candidates": [
+        "https://il-geniodellostreaming.fit"
+      ],
       "match_any": [
         "genio dello streaming",
-        "ilgeniodellostreaming"
+        "il-geniodellostreaming",
+        "ilgeniodellostreaming",
+        "geniodellostreaming"
       ]
     }
   ]
