@@ -2,7 +2,6 @@
 import json
 import re
 import sys
-import time
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -30,17 +29,14 @@ def normalize(url: str) -> str:
 
 
 def dedupe(items):
-    result = []
+    out = []
     seen = set()
-
     for item in items:
         item = normalize(item)
-
         if item and item not in seen:
             seen.add(item)
-            result.append(item)
-
-    return result
+            out.append(item)
+    return out
 
 
 def hostname(url: str) -> str:
@@ -50,31 +46,18 @@ def hostname(url: str) -> str:
         return ""
 
 
-def clean_cert_name(name: str):
-    name = (name or "").strip().lower()
-    name = name.replace("*.", "")
-
-    if not name:
-        return None
-
-    if "/" in name or " " in name:
-        return None
-
-    if not re.fullmatch(r"[a-z0-9.-]+\.[a-z]{2,63}", name):
-        return None
-
-    return name
-
-
 def get_base_label(domain: str) -> str:
     domain = (domain or "").lower().strip(".")
-    if not domain:
-        return ""
+    return domain.split(".")[0] if domain else ""
 
-    # We intentionally compare only the first hostname label.
-    # This matches the user's rule:
-    # same site name + different TLD = eligible for auto-update.
-    return domain.split(".")[0]
+
+def clean_cert_name(name: str):
+    name = (name or "").strip().lower().replace("*.", "")
+    if not name or "/" in name or " " in name:
+        return None
+    if not re.fullmatch(r"[a-z0-9.-]+\.[a-z]{2,63}", name):
+        return None
+    return name
 
 
 def html_matches(text: str, host: str, provider: dict) -> bool:
@@ -83,29 +66,18 @@ def html_matches(text: str, host: str, provider: dict) -> bool:
         for m in provider.get("match_any", [])
         if m and m.strip()
     ]
-
-    haystack = (
-        host + "\n" + (text or "")[:300000]
-    ).lower()
-
-    return bool(markers) and any(
-        marker in haystack
-        for marker in markers
-    )
+    haystack = (host + "\n" + (text or "")[:300000]).lower()
+    return bool(markers) and any(marker in haystack for marker in markers)
 
 
 def probe(url: str, provider: dict):
     url = normalize(url)
-
     if not url:
         return None
 
     attempts = [url]
-
     if url.startswith("https://"):
-        attempts.append(
-            "http://" + url[len("https://"):]
-        )
+        attempts.append("http://" + url[len("https://"):])
 
     for candidate_url in attempts:
         try:
@@ -122,17 +94,9 @@ def probe(url: str, provider: dict):
             final = normalize(response.url)
             final_host = hostname(final)
 
-            if html_matches(
-                response.text or "",
-                final_host,
-                provider
-            ):
+            if html_matches(response.text or "", final_host, provider):
                 if final.startswith("http://"):
-                    final = (
-                        "https://"
-                        + final[len("http://"):]
-                    )
-
+                    final = "https://" + final[len("http://"):]
                 return final
 
         except requests.RequestException:
@@ -144,42 +108,25 @@ def probe(url: str, provider: dict):
 def ct_discover_same_name(provider: dict):
     base_name = (
         provider.get("base_name")
-        or get_base_label(
-            hostname(
-                provider.get("current", "")
-            )
-        )
+        or get_base_label(hostname(provider.get("current", "")))
     ).strip().lower()
 
     if not base_name:
         return []
 
-    # crt.sh wildcard search: same base name, any public TLD/domain suffix.
-    query = f"%.{base_name}.%" if "." in base_name else f"{base_name}.%"
-
-    # More reliable query for exact first label across TLDs:
-    # %25 is URL-encoded '%'.
-    url = (
-        "https://crt.sh/"
-        f"?q={base_name}.%25"
-        "&output=json"
-    )
+    # Search certificates for the same hostname label with any TLD.
+    url = f"https://crt.sh/?q={base_name}.%25&output=json"
 
     found = []
     seen = set()
 
     try:
-        response = requests.get(
-            url,
-            headers=HEADERS,
-            timeout=CT_TIMEOUT
-        )
+        response = requests.get(url, headers=HEADERS, timeout=CT_TIMEOUT)
 
         if response.status_code != 200:
             return []
 
         data = response.json()
-
         if not isinstance(data, list):
             return []
 
@@ -188,14 +135,10 @@ def ct_discover_same_name(provider: dict):
 
             for cert_name in str(raw).splitlines():
                 domain = clean_cert_name(cert_name)
-
                 if not domain:
                     continue
 
-                # Auto-accept discovery only when the first label remains identical.
-                # Example:
-                # altadefinizionex.me -> altadefinizionex.off  YES
-                # altadefinizionex.me -> newstream.off         NO
+                # Only same base name; different TLD is allowed.
                 if get_base_label(domain) != base_name:
                     continue
 
@@ -210,36 +153,10 @@ def ct_discover_same_name(provider: dict):
 
 
 def discovery_candidates(provider: dict):
-    current_host = hostname(
-        provider.get("current", "")
-    )
-
-    current_tld = (
-        current_host.split(".", 1)[1]
-        if "." in current_host
-        else ""
-    )
-
     domains = ct_discover_same_name(provider)
 
-    def score(domain):
-        score_value = 0
-
-        # Prefer direct two-label domains over deeper subdomains.
-        score_value -= domain.count(".") * 3
-
-        # Prefer current suffix only as a weak hint.
-        if current_tld and domain.endswith("." + current_tld):
-            score_value += 5
-
-        # Slight preference for shorter domains.
-        score_value -= len(domain) / 100
-
-        return score_value
-
     domains.sort(
-        key=score,
-        reverse=True
+        key=lambda d: (d.count("."), len(d))
     )
 
     return [
@@ -250,159 +167,83 @@ def discovery_candidates(provider: dict):
 
 def main():
     config = json.loads(
-        PROVIDERS_FILE.read_text(
-            encoding="utf-8"
-        )
+        PROVIDERS_FILE.read_text(encoding="utf-8")
     )
 
     resolved = []
     changed = False
 
-    for provider in config.get(
-        "providers",
-        []
-    ):
+    for provider in config.get("providers", []):
+        current = normalize(provider.get("current", ""))
+
         known = dedupe(
-            [
-                provider.get(
-                    "current",
-                    ""
-                )
-            ]
-            + provider.get(
-                "candidates",
-                []
-            )
+            [current] + provider.get("candidates", [])
         )
 
         winner = None
 
-        # 1) Current domain + known candidates.
+        # 1) Current domain and known candidates.
         for candidate in known:
-            winner = probe(
-                candidate,
-                provider
-            )
-
+            winner = probe(candidate, provider)
             if winner:
                 break
 
-        # 2) If known domains fail, search SAME NAME with a different TLD.
+        # 2) Same base name with another TLD.
         if not winner:
             print(
-                f"[DISCOVERY] "
-                f"{provider['name']}: "
-                "domini noti non validi; "
-                "cerco stesso nome con altro TLD..."
+                f"[DISCOVERY] {provider['name']}: "
+                "domini noti non validi; cerco stesso nome con altro TLD..."
             )
 
-            for candidate in discovery_candidates(
-                provider
-            ):
-                print(
-                    f"[TRY] "
-                    f"{provider['name']}: "
-                    f"{candidate}"
-                )
+            for candidate in discovery_candidates(provider):
+                print(f"[TRY] {provider['name']}: {candidate}")
 
-                winner = probe(
-                    candidate,
-                    provider
-                )
-
+                winner = probe(candidate, provider)
                 if winner:
-                    print(
-                        f"[FOUND] "
-                        f"{provider['name']}: "
-                        f"{winner}"
-                    )
+                    print(f"[FOUND] {provider['name']}: {winner}")
                     break
 
         if winner:
             resolved.append(winner)
 
-            old = normalize(
-                provider.get(
-                    "current",
-                    ""
-                )
-            )
-
-            if old != winner:
+            if current != winner:
                 print(
-                    f"[UPDATE] "
-                    f"{provider['name']}: "
-                    f"{old or '(vuoto)'} "
-                    f"-> {winner}"
+                    f"[UPDATE] {provider['name']}: "
+                    f"{current or '(vuoto)'} -> {winner}"
                 )
 
                 provider["current"] = winner
-
-                candidates = dedupe(
-                    [winner]
-                    + provider.get(
-                        "candidates",
-                        []
-                    )
-                )
-
-                provider["candidates"] = (
-                    candidates[:8]
-                )
-
+                provider["candidates"] = dedupe(
+                    [winner] + provider.get("candidates", [])
+                )[:8]
                 changed = True
-
             else:
-                print(
-                    f"[OK] "
-                    f"{provider['name']}: "
-                    f"{winner}"
-                )
+                print(f"[OK] {provider['name']}: {winner}")
 
         else:
-            old = normalize(
-                provider.get(
-                    "current",
-                    ""
-                )
-            )
-
-            if old:
+            # Important V2.2 behavior:
+            # GitHub can be blocked by a provider even while Tairon/browser can reach it.
+            # Therefore, a failed GitHub probe must NOT delete the last known URL.
+            if current:
+                resolved.append(current)
                 print(
-                    f"[OFFLINE] "
-                    f"{provider['name']}: "
-                    "nessun dominio con lo stesso nome "
-                    "è stato verificato; "
-                    f"non pubblico {old}"
+                    f"[KEEP] {provider['name']}: GitHub non riesce a verificarlo "
+                    f"e non ha trovato un nuovo TLD; mantengo {current}"
                 )
             else:
                 print(
-                    f"[OFFLINE] "
-                    f"{provider['name']}: "
-                    "nessun dominio verificato trovato"
+                    f"[OFFLINE] {provider['name']}: "
+                    "nessun dominio noto e nessun nuovo TLD verificato"
                 )
 
-    # Publish only providers verified during this run.
     OUTPUT_FILE.write_text(
-        "\n".join(
-            dedupe(resolved)
-        )
-        + (
-            "\n"
-            if resolved
-            else ""
-        ),
+        "\n".join(dedupe(resolved)) + ("\n" if resolved else ""),
         encoding="utf-8"
     )
 
     if changed:
         PROVIDERS_FILE.write_text(
-            json.dumps(
-                config,
-                ensure_ascii=False,
-                indent=2
-            )
-            + "\n",
+            json.dumps(config, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8"
         )
 
