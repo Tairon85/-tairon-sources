@@ -7,6 +7,9 @@
       "candidates": [
         "https://altadefinizionex.me"
       ],
+      "ct_queries": [
+        "altadefinizionex"
+      ],
       "match_any": [
         "altadefinizione",
         "altadefinizionex"
@@ -19,6 +22,10 @@
       "candidates": [
         "https://guardaseriex.surf"
       ],
+      "ct_queries": [
+        "guardaseriex",
+        "guardaserie"
+      ],
       "match_any": [
         "guardaserie",
         "guardaseriex"
@@ -29,9 +36,14 @@
       "name": "Il Genio dello Streaming",
       "current": "",
       "candidates": [],
+      "ct_queries": [
+        "ilgeniodellostreaming",
+        "geniodellostreaming"
+      ],
       "match_any": [
         "genio dello streaming",
-        "ilgeniodellostreaming"
+        "ilgeniodellostreaming",
+        "geniodellostreaming"
       ]
     }
   ]
