@@ -40,6 +40,19 @@
         "ilgeniodellostreaming",
         "geniodellostreaming"
       ]
+    },
+    {
+      "id": "cb01uno",
+      "name": "CB01Uno",
+      "base_name": "cb01uno",
+      "current": "https://cb01uno.club",
+      "candidates": [
+        "https://cb01uno.club"
+      ],
+      "match_any": [
+        "cb01",
+        "cb01uno"
+      ]
     }
   ]
 }
