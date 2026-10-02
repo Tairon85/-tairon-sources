@@ -14,16 +14,17 @@
       ]
     },
     {
-      "id": "guardaseriex",
-      "name": "GuardaSerieX",
-      "base_name": "guardaseriex",
-      "current": "https://guardaseriex.surf",
+      "id": "guardaserieworld",
+      "name": "GuardaSerie World",
+      "base_name": "guardaserie",
+      "current": "https://www.guardaserie.world",
       "candidates": [
-        "https://guardaseriex.surf"
+        "https://www.guardaserie.world"
       ],
       "match_any": [
         "guardaserie",
-        "guardaseriex"
+        "guardaflix",
+        "serie"
       ]
     },
     {
