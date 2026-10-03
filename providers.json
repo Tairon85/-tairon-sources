@@ -14,34 +14,6 @@
       ]
     },
     {
-      "id": "guardaseriex",
-      "name": "GuardaSerieX",
-      "base_name": "guardaseriex",
-      "current": "https://guardaseriex.surf",
-      "candidates": [
-        "https://guardaseriex.surf"
-      ],
-      "match_any": [
-        "guardaserie",
-        "guardaseriex"
-      ]
-    },
-    {
-      "id": "ilgeniodellostreaming",
-      "name": "Il Genio dello Streaming",
-      "base_name": "il-geniodellostreaming",
-      "current": "https://il-geniodellostreaming.fit",
-      "candidates": [
-        "https://il-geniodellostreaming.fit"
-      ],
-      "match_any": [
-        "genio dello streaming",
-        "il-geniodellostreaming",
-        "ilgeniodellostreaming",
-        "geniodellostreaming"
-      ]
-    },
-    {
       "id": "cb01uno",
       "name": "CB01Uno",
       "base_name": "cb01uno",
@@ -52,6 +24,20 @@
       "match_any": [
         "cb01",
         "cb01uno"
+      ]
+    },
+    {
+      "id": "streamingcommunity",
+      "name": "Streaming Community",
+      "base_name": "streaming-community",
+      "current": "https://streaming-community.ninja",
+      "candidates": [
+        "https://streaming-community.ninja"
+      ],
+      "match_any": [
+        "streaming community",
+        "streaming-community",
+        "streamingcommunity"
       ]
     }
   ]
