@@ -1,9 +1,9 @@
 name: Update Tairon Sources
 
-"on":
-  workflow_dispatch: {}
+on:
+  workflow_dispatch:
   schedule:
-    - cron: '17 */6 * * *'
+    - cron: "17 */6 * * *"
 
 permissions:
   contents: write
@@ -20,7 +20,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: pip install requests
