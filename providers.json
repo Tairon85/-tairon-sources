@@ -14,8 +14,8 @@
       ]
     },
     {
-      "id": "guardaserieworld",
-      "name": "GuardaSerie World",
+      "id": "guardaserie",
+      "name": "GuardaSerie",
       "base_name": "guardaserie",
       "current": "https://www.guardaserie.world",
       "candidates": [
@@ -23,8 +23,7 @@
       ],
       "match_any": [
         "guardaserie",
-        "guardaflix",
-        "serie"
+        "guardaserie.world"
       ]
     },
     {
@@ -53,6 +52,19 @@
       "match_any": [
         "cb01",
         "cb01uno"
+      ]
+    },
+    {
+      "id": "eurostream",
+      "name": "Eurostream",
+      "base_name": "eurostream",
+      "current": "https://eurostream.mom",
+      "candidates": [
+        "https://eurostream.mom"
+      ],
+      "match_any": [
+        "eurostream",
+        "eurostreaming"
       ]
     }
   ]
