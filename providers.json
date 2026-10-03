@@ -14,16 +14,16 @@
       ]
     },
     {
-      "id": "guardaserie",
-      "name": "GuardaSerie",
-      "base_name": "guardaserie",
-      "current": "https://www.guardaserie.world",
+      "id": "guardaseriex",
+      "name": "GuardaSerieX",
+      "base_name": "guardaseriex",
+      "current": "https://guardaseriex.surf",
       "candidates": [
-        "https://www.guardaserie.world"
+        "https://guardaseriex.surf"
       ],
       "match_any": [
         "guardaserie",
-        "guardaserie.world"
+        "guardaseriex"
       ]
     },
     {
@@ -52,19 +52,6 @@
       "match_any": [
         "cb01",
         "cb01uno"
-      ]
-    },
-    {
-      "id": "eurostream",
-      "name": "Eurostream",
-      "base_name": "eurostream",
-      "current": "https://eurostream.mom",
-      "candidates": [
-        "https://eurostream.mom"
-      ],
-      "match_any": [
-        "eurostream",
-        "eurostreaming"
       ]
     }
   ]
