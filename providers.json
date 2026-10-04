@@ -14,30 +14,58 @@
       ]
     },
     {
-      "id": "cb01uno",
-      "name": "CB01Uno",
-      "base_name": "cb01uno",
-      "current": "https://cb01uno.club",
+      "id": "guardaseriex",
+      "name": "GuardaSerieX",
+      "base_name": "guardaseriex",
+      "current": "https://guardaseriex.surf",
       "candidates": [
-        "https://cb01uno.club"
+        "https://guardaseriex.surf"
       ],
       "match_any": [
-        "cb01",
-        "cb01uno"
+        "guardaserie",
+        "guardaseriex"
       ]
     },
     {
-      "id": "streamingcommunity",
-      "name": "Streaming Community",
-      "base_name": "streaming-community",
-      "current": "https://streaming-community.ninja",
+      "id": "ilgeniodellostreaming",
+      "name": "Il Genio dello Streaming",
+      "base_name": "il-geniodellostreaming",
+      "current": "https://il-geniodellostreaming.fit",
       "candidates": [
-        "https://streaming-community.ninja"
+        "https://il-geniodellostreaming.fit"
       ],
       "match_any": [
-        "streaming community",
-        "streaming-community",
-        "streamingcommunity"
+        "genio dello streaming",
+        "il-geniodellostreaming",
+        "ilgeniodellostreaming",
+        "geniodellostreaming"
+      ]
+    },
+    {
+      "id": "casacinema",
+      "name": "CasaCinema",
+      "base_name": "casa-cinema",
+      "current": "https://casa-cinema.cfd",
+      "candidates": [
+        "https://casa-cinema.cfd"
+      ],
+      "match_any": [
+        "casa cinema",
+        "casa-cinema",
+        "casacinema"
+      ]
+    },
+    {
+      "id": "filmsenzalimiti",
+      "name": "FilmSenzaLimiti",
+      "base_name": "filmsenzalimiti",
+      "current": "https://filmsenzalimiti.study",
+      "candidates": [
+        "https://filmsenzalimiti.study"
+      ],
+      "match_any": [
+        "film senza limiti",
+        "filmsenzalimiti"
       ]
     }
   ]
