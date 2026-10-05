@@ -5,35 +5,23 @@
       "name": "AltaDefinizioneX",
       "base_name": "altadefinizionex",
       "current": "https://altadefinizionex.me",
-      "candidates": [
-        "https://altadefinizionex.me"
-      ],
-      "match_any": [
-        "altadefinizione",
-        "altadefinizionex"
-      ]
+      "candidates": ["https://altadefinizionex.me"],
+      "match_any": ["altadefinizione", "altadefinizionex"]
     },
     {
       "id": "guardaseriex",
       "name": "GuardaSerieX",
       "base_name": "guardaseriex",
       "current": "https://guardaseriex.surf",
-      "candidates": [
-        "https://guardaseriex.surf"
-      ],
-      "match_any": [
-        "guardaserie",
-        "guardaseriex"
-      ]
+      "candidates": ["https://guardaseriex.surf"],
+      "match_any": ["guardaserie", "guardaseriex"]
     },
     {
       "id": "ilgeniodellostreaming",
       "name": "Il Genio dello Streaming",
       "base_name": "il-geniodellostreaming",
       "current": "https://il-geniodellostreaming.fit",
-      "candidates": [
-        "https://il-geniodellostreaming.fit"
-      ],
+      "candidates": ["https://il-geniodellostreaming.fit"],
       "match_any": [
         "genio dello streaming",
         "il-geniodellostreaming",
@@ -46,26 +34,19 @@
       "name": "CasaCinema",
       "base_name": "casa-cinema",
       "current": "https://casa-cinema.cfd",
-      "candidates": [
-        "https://casa-cinema.cfd"
-      ],
-      "match_any": [
-        "casa cinema",
-        "casa-cinema",
-        "casacinema"
-      ]
+      "candidates": ["https://casa-cinema.cfd"],
+      "match_any": ["casa cinema", "casa-cinema", "casacinema"]
     },
     {
-      "id": "filmsenzalimiti",
-      "name": "FilmSenzaLimiti",
-      "base_name": "filmsenzalimiti",
-      "current": "https://filmsenzalimiti.study",
-      "candidates": [
-        "https://filmsenzalimiti.study"
-      ],
+      "id": "streamingcommunityz",
+      "name": "StreamingCommunityZ",
+      "base_name": "streamingcommunityz",
+      "current": "https://streamingcommunityz.photography/it/movies",
+      "candidates": ["https://streamingcommunityz.photography/it/movies"],
       "match_any": [
-        "film senza limiti",
-        "filmsenzalimiti"
+        "streaming community",
+        "streamingcommunity",
+        "streamingcommunityz"
       ]
     }
   ]
