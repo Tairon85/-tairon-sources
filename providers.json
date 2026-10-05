@@ -5,23 +5,35 @@
       "name": "AltaDefinizioneX",
       "base_name": "altadefinizionex",
       "current": "https://altadefinizionex.me",
-      "candidates": ["https://altadefinizionex.me"],
-      "match_any": ["altadefinizione", "altadefinizionex"]
+      "candidates": [
+        "https://altadefinizionex.me"
+      ],
+      "match_any": [
+        "altadefinizione",
+        "altadefinizionex"
+      ]
     },
     {
       "id": "guardaseriex",
       "name": "GuardaSerieX",
       "base_name": "guardaseriex",
       "current": "https://guardaseriex.surf",
-      "candidates": ["https://guardaseriex.surf"],
-      "match_any": ["guardaserie", "guardaseriex"]
+      "candidates": [
+        "https://guardaseriex.surf"
+      ],
+      "match_any": [
+        "guardaserie",
+        "guardaseriex"
+      ]
     },
     {
       "id": "ilgeniodellostreaming",
       "name": "Il Genio dello Streaming",
       "base_name": "il-geniodellostreaming",
       "current": "https://il-geniodellostreaming.fit",
-      "candidates": ["https://il-geniodellostreaming.fit"],
+      "candidates": [
+        "https://il-geniodellostreaming.fit"
+      ],
       "match_any": [
         "genio dello streaming",
         "il-geniodellostreaming",
@@ -34,19 +46,40 @@
       "name": "CasaCinema",
       "base_name": "casa-cinema",
       "current": "https://casa-cinema.cfd",
-      "candidates": ["https://casa-cinema.cfd"],
-      "match_any": ["casa cinema", "casa-cinema", "casacinema"]
+      "candidates": [
+        "https://casa-cinema.cfd"
+      ],
+      "match_any": [
+        "casa cinema",
+        "casa-cinema",
+        "casacinema"
+      ]
     },
     {
       "id": "streamingcommunityz",
       "name": "StreamingCommunityZ",
       "base_name": "streamingcommunityz",
       "current": "https://streamingcommunityz.photography/it/movies",
-      "candidates": ["https://streamingcommunityz.photography/it/movies"],
+      "candidates": [
+        "https://streamingcommunityz.photography/it/movies"
+      ],
       "match_any": [
         "streaming community",
         "streamingcommunity",
         "streamingcommunityz"
+      ]
+    },
+    {
+      "id": "tantifilm",
+      "name": "TantiFilm",
+      "base_name": "tantifilm",
+      "current": "https://www.tantifilm.store",
+      "candidates": [
+        "https://www.tantifilm.store"
+      ],
+      "match_any": [
+        "tantifilm",
+        "tanti film"
       ]
     }
   ]
