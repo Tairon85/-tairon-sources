@@ -4,8 +4,9 @@
       "id": "altadefinizionex",
       "name": "AltaDefinizioneX",
       "base_name": "altadefinizionex",
-      "current": "https://altadefinizionex.me",
+      "current": "https://altadefinizionex.surf",
       "candidates": [
+        "https://altadefinizionex.surf",
         "https://altadefinizionex.me"
       ],
       "match_any": [
@@ -17,8 +18,9 @@
       "id": "guardaseriex",
       "name": "GuardaSerieX",
       "base_name": "guardaseriex",
-      "current": "https://guardaseriex.surf",
+      "current": "https://guardaseriex.click",
       "candidates": [
+        "https://guardaseriex.click",
         "https://guardaseriex.surf"
       ],
       "match_any": [
@@ -30,8 +32,9 @@
       "id": "ilgeniodellostreaming",
       "name": "Il Genio dello Streaming",
       "base_name": "il-geniodellostreaming",
-      "current": "https://il-geniodellostreaming.fit",
+      "current": "https://il-geniodellostreaming.vip",
       "candidates": [
+        "https://il-geniodellostreaming.vip",
         "https://il-geniodellostreaming.fit"
       ],
       "match_any": [
@@ -59,8 +62,9 @@
       "id": "streamingcommunityz",
       "name": "StreamingCommunityZ",
       "base_name": "streamingcommunityz",
-      "current": "https://streamingcommunityz.photography/it/movies",
+      "current": "https://streamingcommunityz.promo/it/movies",
       "candidates": [
+        "https://streamingcommunityz.promo/it/movies",
         "https://streamingcommunityz.photography/it/movies"
       ],
       "match_any": [
