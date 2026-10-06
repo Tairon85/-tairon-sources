@@ -348,13 +348,27 @@ def main():
         current = normalize(provider.get("current", ""))
 
         # Un blocco anti-bot non significa che il dominio sia morto.
-        # In questo caso lo manteniamo e riproviamo al giro successivo.
+        # In questo caso manteniamo il CURRENT e riproviamo al giro successivo.
+        # V2.6: anche se il sito e' bloccato, ripuliamo i candidate obsoleti
+        # e lasciamo solo il current, cosi' Tairon non riprova vecchi domini.
         if "blocked" in probe_states:
             if current:
                 resolved.append(current)
+
+                old_candidates = dedupe(provider.get("candidates", []))
+                if old_candidates != [current]:
+                    removed = [url for url in old_candidates if url != current]
+                    provider["candidates"] = [current]
+                    changed = True
+                    if removed:
+                        print(
+                            f"[PRUNE-BLOCKED] {name}: rimossi candidate obsoleti: "
+                            + ", ".join(removed)
+                        )
+
             print(
                 f"[BLOCKED] {name}: verifica impedita da anti-bot/rate-limit; "
-                "non considero il dominio morto."
+                "mantengo solo il dominio current e non lo considero morto."
             )
             changed |= set_meta(provider, "auto_status", "blocked")
             continue
