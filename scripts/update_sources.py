@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Tairon Sources Auto Update V2.7 - app-aware search validation
+# Tairon Sources Auto Update V2.8 - last-known-good + 2-cycle promotion
 import html as html_lib
 import json
 import re
@@ -545,6 +545,48 @@ def prune_to_current(provider: dict, current: str, label: str):
     return True
 
 
+
+PROMOTION_CONFIRMATIONS = 2
+
+
+def reset_pending(provider: dict):
+    changed = False
+    changed |= set_meta(provider, "pending_candidate", "")
+    changed |= set_meta(provider, "pending_successes", 0)
+    return changed
+
+
+def note_pending(provider: dict, candidate: str):
+    candidate = normalize(candidate)
+    previous = normalize(provider.get("pending_candidate", ""))
+    successes = int(provider.get("pending_successes", 0) or 0)
+    if previous == candidate:
+        successes += 1
+    else:
+        successes = 1
+    changed = False
+    changed |= set_meta(provider, "pending_candidate", candidate)
+    changed |= set_meta(provider, "pending_successes", successes)
+    return successes, changed
+
+
+def promote(provider: dict, url: str, name: str):
+    url = normalize(url)
+    old = normalize(provider.get("current", ""))
+    changed = False
+    if old != url:
+        print(f"[PROMOTE] {name}: {old or '(vuoto)'} -> {url}")
+        provider["current"] = url
+        changed = True
+    changed |= set_meta(provider, "last_known_good", url)
+    changed |= prune_to_current(provider, url, "PRUNE")
+    changed |= reset_pending(provider)
+    changed |= set_meta(provider, "auto_status", "ok")
+    changed |= set_meta(provider, "auto_failures", 0)
+    changed |= set_meta(provider, "auto_blocked_cycles", 0)
+    changed |= set_meta(provider, "app_validation", "search-compatible")
+    return changed
+
 def main():
     config = json.loads(PROVIDERS_FILE.read_text(encoding="utf-8"))
     resolved = []
@@ -553,117 +595,105 @@ def main():
     for provider in config.get("providers", []):
         name = provider.get("name") or provider.get("id") or "provider"
         current = normalize(provider.get("current", ""))
-        known = dedupe([current] + provider.get("candidates", []))
-        winner = None
-        probe_states = []
+        last_good = normalize(provider.get("last_known_good", "")) or current
 
-        # 1) Validate current/known URLs using Tairon's actual search model.
-        for candidate in known:
-            found, state, detail = app_search_probe(candidate, provider)
-            probe_states.append(state)
-            print(f"[CHECK-APP] {name}: {candidate} -> {state} ({detail})")
-            if found:
-                winner = found
-                break
+        if last_good and provider.get("last_known_good") != last_good:
+            changed |= set_meta(provider, "last_known_good", last_good)
 
-        # GitHub may be blocked while Android WebView still works. Keep current and
-        # run expensive discovery only periodically instead of every 6-hour cycle.
-        blocked_cycles = int(provider.get("auto_blocked_cycles", 0) or 0)
-        current_blocked = bool(current and probe_states and probe_states[0] == "blocked")
-        run_discovery = not winner
-        if current_blocked:
-            blocked_cycles += 1
-            changed |= set_meta(provider, "auto_blocked_cycles", blocked_cycles)
-            run_discovery = (blocked_cycles % BLOCKED_DISCOVERY_EVERY == 0)
-            if not run_discovery:
-                print(
-                    f"[BLOCKED-FAST] {name}: current bloccato dal runner GitHub; "
-                    f"discovery rinviata ({blocked_cycles}/{BLOCKED_DISCOVERY_EVERY})."
-                )
-        else:
-            changed |= set_meta(provider, "auto_blocked_cycles", 0)
+        # 1) Il current resta preferito finché funziona davvero con la ricerca Tairon.
+        current_found = None
+        current_state = "dead"
+        current_detail = "URL vuoto"
+        if current:
+            current_found, current_state, current_detail = app_search_probe(current, provider)
+            print(f"[CHECK-APP] {name}: {current} -> {current_state} ({current_detail})")
 
-        # 2) Search same-brand domains, but promote ONLY after app-aware search passes.
-        if run_discovery and not winner:
-            print(
-                f"[DISCOVERY-APP] {name}: cerco varianti e le valido con una ricerca Tairon reale..."
-            )
-            for candidate in discovery_candidates(provider):
-                if normalize(candidate) in known:
-                    continue
-                found, state, detail = app_search_probe(candidate, provider)
-                probe_states.append(state)
-                print(f"[TRY-APP] {name}: {candidate} -> {state} ({detail})")
-                if found:
-                    winner = found
-                    print(f"[FOUND-APP] {name}: {winner}")
-                    break
-
-        if winner:
-            resolved.append(winner)
-            old = current
-            if old != winner:
-                print(f"[UPDATE-APP] {name}: {old or '(vuoto)'} -> {winner}")
-                provider["current"] = winner
-                current = winner
-                changed = True
-            else:
-                print(f"[OK-APP] {name}: {winner}")
-
-            changed |= prune_to_current(provider, winner, "PRUNE")
-            changed |= set_meta(provider, "auto_status", "ok")
-            changed |= set_meta(provider, "auto_failures", 0)
-            changed |= set_meta(provider, "auto_blocked_cycles", 0)
-            changed |= set_meta(provider, "app_validation", "search-compatible")
+        if current_found:
+            current = normalize(current_found)
+            resolved.append(current)
+            print(f"[OK-LKG] {name}: {current}")
+            changed |= promote(provider, current, name)
             continue
 
-        # A GitHub anti-bot block is not enough to evict a source that may work in the app.
-        if current_blocked or "blocked" in probe_states:
+        # 2) Se il current non funziona, prova prima il last-known-good noto dal dispositivo.
+        if last_good and last_good != current:
+            good_found, good_state, good_detail = app_search_probe(last_good, provider)
+            print(f"[CHECK-LKG] {name}: {last_good} -> {good_state} ({good_detail})")
+            if good_found:
+                good_found = normalize(good_found)
+                resolved.append(good_found)
+                print(f"[ROLLBACK-LKG] {name}: torno a {good_found}")
+                changed |= promote(provider, good_found, name)
+                continue
+
+        # Se GitHub è bloccato sul current/last-good, non lo sostituiamo alla cieca.
+        if current_state == "blocked":
+            blocked_cycles = int(provider.get("auto_blocked_cycles", 0) or 0) + 1
+            changed |= set_meta(provider, "auto_blocked_cycles", blocked_cycles)
             if current:
                 resolved.append(current)
                 changed |= prune_to_current(provider, current, "PRUNE-BLOCKED")
-            print(
-                f"[BLOCKED] {name}: il runner GitHub non può completare la verifica; "
-                "mantengo il current senza dichiararlo morto."
-            )
+            print(f"[BLOCKED-LKG] {name}: runner GitHub bloccato; mantengo {current or last_good}.")
             changed |= set_meta(provider, "auto_status", "blocked")
             changed |= set_meta(provider, "app_validation", "unknown-blocked")
             continue
 
-        # Reachable but not searchable by Tairon is explicitly incompatible.
-        if "incompatible" in probe_states:
-            previous_failures = int(provider.get("auto_failures", 0) or 0)
-            failures = min(previous_failures + 1, FAILURES_BEFORE_OFFLINE)
-            changed |= set_meta(provider, "auto_failures", failures)
-            changed |= set_meta(provider, "auto_status", "incompatible")
-            changed |= set_meta(provider, "app_validation", "incompatible")
-            if current and failures < FAILURES_BEFORE_OFFLINE:
-                resolved.append(current)
-                print(
-                    f"[INCOMPATIBLE] {name}: sito raggiungibile ma ricerca Tairon non confermata "
-                    f"({failures}/{FAILURES_BEFORE_OFFLINE}); mantengo temporaneamente {current}."
-                )
+        changed |= set_meta(provider, "auto_blocked_cycles", 0)
+
+        # 3) Discovery: un nuovo dominio NON viene promosso subito.
+        # Deve superare il test app-aware in due workflow consecutivi.
+        candidate_found = None
+        candidate_state = None
+        print(f"[DISCOVERY-APP] {name}: cerco un nuovo dominio compatibile con Tairon...")
+        for candidate in discovery_candidates(provider):
+            candidate = normalize(candidate)
+            if candidate in {current, last_good}:
+                continue
+            found, state, detail = app_search_probe(candidate, provider)
+            print(f"[TRY-APP] {name}: {candidate} -> {state} ({detail})")
+            if found:
+                candidate_found = normalize(found)
+                candidate_state = state
+                break
+
+        if candidate_found:
+            successes, pending_changed = note_pending(provider, candidate_found)
+            changed |= pending_changed
+            print(
+                f"[PENDING] {name}: {candidate_found} conferma "
+                f"{successes}/{PROMOTION_CONFIRMATIONS}; non sostituisco ancora il last-known-good."
+            )
+            if successes >= PROMOTION_CONFIRMATIONS:
+                resolved.append(candidate_found)
+                changed |= promote(provider, candidate_found, name)
             else:
-                print(
-                    f"[OFFLINE-APP] {name}: ricerca Tairon incompatibile per "
-                    f"{FAILURES_BEFORE_OFFLINE} controlli consecutivi; escluso dal file live."
-                )
+                # Finché il candidato non è confermato, mantieni il last-known-good/current live.
+                fallback = last_good or current
+                if fallback:
+                    resolved.append(fallback)
+                    changed |= prune_to_current(provider, fallback, "PRUNE-PENDING")
+                changed |= set_meta(provider, "auto_status", "pending")
             continue
+
+        # Nessun candidato valido: azzera eventuale conferma pendente.
+        changed |= reset_pending(provider)
 
         previous_failures = int(provider.get("auto_failures", 0) or 0)
         failures = min(previous_failures + 1, FAILURES_BEFORE_OFFLINE)
         changed |= set_meta(provider, "auto_failures", failures)
-        if current and failures < FAILURES_BEFORE_OFFLINE:
-            resolved.append(current)
+
+        fallback = last_good or current
+        if fallback and failures < FAILURES_BEFORE_OFFLINE:
+            resolved.append(fallback)
             print(
-                f"[KEEP] {name}: verifica fallita {failures}/{FAILURES_BEFORE_OFFLINE}; "
-                f"mantengo temporaneamente {current}."
+                f"[KEEP-LKG] {name}: nessun nuovo dominio confermato "
+                f"({failures}/{FAILURES_BEFORE_OFFLINE}); mantengo {fallback}."
             )
             changed |= set_meta(provider, "auto_status", "warning")
         else:
             print(
-                f"[OFFLINE] {name}: {FAILURES_BEFORE_OFFLINE} controlli consecutivi falliti; "
-                "escluso dal file live finché non viene ritrovato."
+                f"[OFFLINE] {name}: {FAILURES_BEFORE_OFFLINE} controlli consecutivi falliti "
+                "e nessun candidato app-aware confermato."
             )
             changed |= set_meta(provider, "auto_status", "offline")
 
