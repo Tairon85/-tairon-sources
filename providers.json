@@ -5,39 +5,35 @@
       "name": "AltaDefinizioneX",
       "base_name": "altadefinizionex",
       "current": "https://altadefinizionex.surf",
+      "last_known_good": "https://altadefinizionex.surf",
       "candidates": [
         "https://altadefinizionex.surf"
       ],
       "match_any": [
         "altadefinizione",
         "altadefinizionex"
-      ],
-      "auto_status": "ok",
-      "auto_failures": 0,
-      "auto_blocked_cycles": 0,
-      "app_validation": "search-compatible"
+      ]
     },
     {
       "id": "guardaseriex",
       "name": "GuardaSerieX",
       "base_name": "guardaseriex",
-      "current": "https://guardaserie.ws",
+      "current": "https://guardaseriex.click",
+      "last_known_good": "https://guardaseriex.click",
       "candidates": [
-        "https://guardaserie.ws"
+        "https://guardaseriex.click"
       ],
       "match_any": [
         "guardaserie",
         "guardaseriex"
-      ],
-      "auto_status": "warning",
-      "auto_failures": 1,
-      "auto_blocked_cycles": 0
+      ]
     },
     {
       "id": "ilgeniodellostreaming",
       "name": "Il Genio dello Streaming",
       "base_name": "il-geniodellostreaming",
       "current": "https://il-geniodellostreaming.vip",
+      "last_known_good": "https://il-geniodellostreaming.vip",
       "candidates": [
         "https://il-geniodellostreaming.vip"
       ],
@@ -46,16 +42,14 @@
         "il-geniodellostreaming",
         "ilgeniodellostreaming",
         "geniodellostreaming"
-      ],
-      "auto_status": "blocked",
-      "auto_blocked_cycles": 1,
-      "app_validation": "unknown-blocked"
+      ]
     },
     {
       "id": "casacinema",
       "name": "CasaCinema",
       "base_name": "casa-cinema",
       "current": "https://casa-cinema.cfd",
+      "last_known_good": "https://casa-cinema.cfd",
       "candidates": [
         "https://casa-cinema.cfd"
       ],
@@ -63,16 +57,14 @@
         "casa cinema",
         "casa-cinema",
         "casacinema"
-      ],
-      "auto_status": "blocked",
-      "auto_blocked_cycles": 1,
-      "app_validation": "unknown-blocked"
+      ]
     },
     {
       "id": "streamingcommunityz",
       "name": "StreamingCommunityZ",
       "base_name": "streamingcommunityz",
       "current": "https://streamingcommunityz.rip/it/movies",
+      "last_known_good": "https://streamingcommunityz.rip/it/movies",
       "candidates": [
         "https://streamingcommunityz.rip/it/movies"
       ],
@@ -80,28 +72,21 @@
         "streaming community",
         "streamingcommunity",
         "streamingcommunityz"
-      ],
-      "auto_status": "blocked",
-      "auto_failures": 0,
-      "auto_blocked_cycles": 1,
-      "app_validation": "unknown-blocked"
+      ]
     },
     {
       "id": "tantifilm",
       "name": "TantiFilm",
       "base_name": "tantifilm",
       "current": "https://www.tantifilm.store",
+      "last_known_good": "https://www.tantifilm.store",
       "candidates": [
         "https://www.tantifilm.store"
       ],
       "match_any": [
         "tantifilm",
         "tanti film"
-      ],
-      "auto_status": "blocked",
-      "auto_failures": 0,
-      "auto_blocked_cycles": 1,
-      "app_validation": "unknown-blocked"
+      ]
     }
   ]
 }
