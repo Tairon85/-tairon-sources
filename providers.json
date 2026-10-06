@@ -13,7 +13,9 @@
         "altadefinizionex"
       ],
       "auto_status": "ok",
-      "auto_failures": 0
+      "auto_failures": 0,
+      "auto_blocked_cycles": 0,
+      "app_validation": "search-compatible"
     },
     {
       "id": "guardaseriex",
@@ -27,8 +29,9 @@
         "guardaserie",
         "guardaseriex"
       ],
-      "auto_status": "ok",
-      "auto_failures": 0
+      "auto_status": "warning",
+      "auto_failures": 1,
+      "auto_blocked_cycles": 0
     },
     {
       "id": "ilgeniodellostreaming",
@@ -44,7 +47,9 @@
         "ilgeniodellostreaming",
         "geniodellostreaming"
       ],
-      "auto_status": "blocked"
+      "auto_status": "blocked",
+      "auto_blocked_cycles": 1,
+      "app_validation": "unknown-blocked"
     },
     {
       "id": "casacinema",
@@ -59,7 +64,9 @@
         "casa-cinema",
         "casacinema"
       ],
-      "auto_status": "blocked"
+      "auto_status": "blocked",
+      "auto_blocked_cycles": 1,
+      "app_validation": "unknown-blocked"
     },
     {
       "id": "streamingcommunityz",
@@ -74,8 +81,10 @@
         "streamingcommunity",
         "streamingcommunityz"
       ],
-      "auto_status": "ok",
-      "auto_failures": 0
+      "auto_status": "blocked",
+      "auto_failures": 0,
+      "auto_blocked_cycles": 1,
+      "app_validation": "unknown-blocked"
     },
     {
       "id": "tantifilm",
@@ -89,8 +98,10 @@
         "tantifilm",
         "tanti film"
       ],
-      "auto_status": "ok",
-      "auto_failures": 0
+      "auto_status": "blocked",
+      "auto_failures": 0,
+      "auto_blocked_cycles": 1,
+      "app_validation": "unknown-blocked"
     }
   ]
 }
