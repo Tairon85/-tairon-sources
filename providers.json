@@ -19,16 +19,16 @@
       "id": "guardaseriex",
       "name": "GuardaSerieX",
       "base_name": "guardaseriex",
-      "current": "https://guardaseriex.click",
+      "current": "https://guardaserie.ws",
       "candidates": [
-        "https://guardaseriex.click",
-        "https://guardaseriex.surf"
+        "https://guardaserie.ws"
       ],
       "match_any": [
         "guardaserie",
         "guardaseriex"
       ],
-      "auto_status": "blocked"
+      "auto_status": "ok",
+      "auto_failures": 0
     },
     {
       "id": "ilgeniodellostreaming",
