@@ -6,13 +6,14 @@
       "base_name": "altadefinizionex",
       "current": "https://altadefinizionex.surf",
       "candidates": [
-        "https://altadefinizionex.surf",
-        "https://altadefinizionex.me"
+        "https://altadefinizionex.surf"
       ],
       "match_any": [
         "altadefinizione",
         "altadefinizionex"
-      ]
+      ],
+      "auto_status": "ok",
+      "auto_failures": 0
     },
     {
       "id": "guardaseriex",
@@ -26,7 +27,8 @@
       "match_any": [
         "guardaserie",
         "guardaseriex"
-      ]
+      ],
+      "auto_status": "blocked"
     },
     {
       "id": "ilgeniodellostreaming",
@@ -42,7 +44,8 @@
         "il-geniodellostreaming",
         "ilgeniodellostreaming",
         "geniodellostreaming"
-      ]
+      ],
+      "auto_status": "blocked"
     },
     {
       "id": "casacinema",
@@ -56,22 +59,24 @@
         "casa cinema",
         "casa-cinema",
         "casacinema"
-      ]
+      ],
+      "auto_status": "blocked"
     },
     {
       "id": "streamingcommunityz",
       "name": "StreamingCommunityZ",
       "base_name": "streamingcommunityz",
-      "current": "https://streamingcommunityz.promo/it/movies",
+      "current": "https://streamingcommunityz.rip/it/movies",
       "candidates": [
-        "https://streamingcommunityz.promo/it/movies",
-        "https://streamingcommunityz.photography/it/movies"
+        "https://streamingcommunityz.rip/it/movies"
       ],
       "match_any": [
         "streaming community",
         "streamingcommunity",
         "streamingcommunityz"
-      ]
+      ],
+      "auto_status": "ok",
+      "auto_failures": 0
     },
     {
       "id": "tantifilm",
@@ -84,7 +89,9 @@
       "match_any": [
         "tantifilm",
         "tanti film"
-      ]
+      ],
+      "auto_status": "ok",
+      "auto_failures": 0
     }
   ]
 }
