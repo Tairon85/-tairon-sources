@@ -1,6 +1,18 @@
 {
   "providers": [
     {
+      "id": "azmovies",
+      "name": "AZMovies",
+      "base_name": "azmovies",
+      "current": "https://azmovies.to/",
+      "candidates": [
+        "https://azmovies.to/"
+      ],
+      "match_any": [
+        "azmovies"
+      ]
+    },
+    {
       "id": "cineblog001",
       "name": "CineBlog001",
       "base_name": "cineblog001",
@@ -26,19 +38,6 @@
         "tanti-film",
         "tantifilm",
         "tanti film"
-      ]
-    },
-    {
-      "id": "azmovies",
-      "name": "AZMovies",
-      "base_name": "azmovies",
-      "current": "https://azmovies.to",
-      "candidates": [
-        "https://azmovies.to"
-      ],
-      "match_any": [
-        "azmovies",
-        "az movies"
       ]
     }
   ]
