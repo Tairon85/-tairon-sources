@@ -1,57 +1,18 @@
 {
   "candidates": [
     {
-      "id": "cb01",
-      "name": "CB01 / CineBlog01",
-      "base_name": "cb01",
-      "current": "https://cb01uno.club",
-      "match_any": [
-        "cb01",
-        "cineblog01",
-        "cineblog"
-      ]
+      "id": "cineblog001_tattoo",
+      "name": "CineBlog001 (tattoo)",
+      "base_name": "cineblog001",
+      "current": "https://cineblog001.tattoo/",
+      "match_any": ["cineblog001", "cineblog", "cb01"]
     },
     {
-      "id": "filmpertutti",
-      "name": "FilmPerTutti",
-      "base_name": "film-pertutti",
-      "current": "https://film-pertutti.beer",
-      "match_any": [
-        "filmpertutti",
-        "film-pertutti",
-        "film per tutti"
-      ]
-    },
-    {
-      "id": "filmsenzalimiti",
-      "name": "FilmSenzaLimiti",
-      "base_name": "filmsenzalimiti",
-      "current": "https://filmsenzalimiti.study",
-      "match_any": [
-        "filmsenzalimiti",
-        "film senza limiti"
-      ]
-    },
-    {
-      "id": "casacinema",
-      "name": "CasaCinema",
-      "base_name": "casa-cinema",
-      "current": "https://www.casacinema.media",
-      "match_any": [
-        "casacinema",
-        "casa cinema",
-        "casa-cinema"
-      ]
-    },
-    {
-      "id": "tantifilm",
-      "name": "TantiFilm",
-      "base_name": "tantifilm",
-      "current": "https://www.tantifilm.center",
-      "match_any": [
-        "tantifilm",
-        "tanti film"
-      ]
+      "id": "tantifilm_work",
+      "name": "TantiFilm (work)",
+      "base_name": "tanti-film",
+      "current": "https://tanti-film.work/",
+      "match_any": ["tanti-film", "tantifilm", "tanti film"]
     }
   ]
 }
