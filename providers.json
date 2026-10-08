@@ -33,9 +33,12 @@
         "guardaserie",
         "guardaseriex"
       ],
-      "auto_blocked_cycles": 1,
+      "auto_blocked_cycles": 2,
       "auto_status": "blocked",
-      "app_validation": "unknown-blocked"
+      "app_validation": "unknown-blocked",
+      "pending_candidate": "",
+      "pending_successes": 0,
+      "auto_failures": 1
     },
     {
       "id": "ilgeniodellostreaming",
@@ -52,9 +55,12 @@
         "ilgeniodellostreaming",
         "geniodellostreaming"
       ],
-      "auto_blocked_cycles": 1,
+      "auto_blocked_cycles": 2,
       "auto_status": "blocked",
-      "app_validation": "unknown-blocked"
+      "app_validation": "unknown-blocked",
+      "pending_candidate": "",
+      "pending_successes": 0,
+      "auto_failures": 1
     }
   ]
 }
