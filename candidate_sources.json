@@ -1,0 +1,57 @@
+{
+  "candidates": [
+    {
+      "id": "cb01",
+      "name": "CB01 / CineBlog01",
+      "base_name": "cb01",
+      "current": "https://cb01uno.club",
+      "match_any": [
+        "cb01",
+        "cineblog01",
+        "cineblog"
+      ]
+    },
+    {
+      "id": "filmpertutti",
+      "name": "FilmPerTutti",
+      "base_name": "film-pertutti",
+      "current": "https://film-pertutti.beer",
+      "match_any": [
+        "filmpertutti",
+        "film-pertutti",
+        "film per tutti"
+      ]
+    },
+    {
+      "id": "filmsenzalimiti",
+      "name": "FilmSenzaLimiti",
+      "base_name": "filmsenzalimiti",
+      "current": "https://filmsenzalimiti.study",
+      "match_any": [
+        "filmsenzalimiti",
+        "film senza limiti"
+      ]
+    },
+    {
+      "id": "casacinema",
+      "name": "CasaCinema",
+      "base_name": "casa-cinema",
+      "current": "https://www.casacinema.media",
+      "match_any": [
+        "casacinema",
+        "casa cinema",
+        "casa-cinema"
+      ]
+    },
+    {
+      "id": "tantifilm",
+      "name": "TantiFilm",
+      "base_name": "tantifilm",
+      "current": "https://www.tantifilm.center",
+      "match_any": [
+        "tantifilm",
+        "tanti film"
+      ]
+    }
+  ]
+}
