@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Tairon Sources Auto Update V2.9 STRICT - last-known-good + 2-cycle promotion
+# Tairon Sources Auto Update V3 - manual allowlist, no stale providers or pending sources
 import html as html_lib
 import json
 import re
@@ -27,7 +27,7 @@ TIMEOUT = 15
 SEARCH_TIMEOUT = 18
 CT_TIMEOUT = 20
 MAX_CT_RESULTS = 200
-MAX_DISCOVERY_PROBES = 40
+MAX_DISCOVERY_PROBES = 12
 FAILURES_BEFORE_OFFLINE = 3
 BLOCKED_DISCOVERY_EVERY = 4
 TEST_QUERY = "natale sul nilo"
@@ -546,180 +546,109 @@ def prune_to_current(provider: dict, current: str, label: str):
 
 
 
-PROMOTION_CONFIRMATIONS = 2
 
-
-def reset_pending(provider: dict):
-    changed = False
-    changed |= set_meta(provider, "pending_candidate", "")
-    changed |= set_meta(provider, "pending_successes", 0)
-    return changed
-
-
-def note_pending(provider: dict, candidate: str):
-    candidate = normalize(candidate)
-    previous = normalize(provider.get("pending_candidate", ""))
-    successes = int(provider.get("pending_successes", 0) or 0)
-    if previous == candidate:
-        successes += 1
-    else:
-        successes = 1
-    changed = False
-    changed |= set_meta(provider, "pending_candidate", candidate)
-    changed |= set_meta(provider, "pending_successes", successes)
-    return successes, changed
-
-
-def promote(provider: dict, url: str, name: str):
-    url = normalize(url)
-    old = normalize(provider.get("current", ""))
-    changed = False
-    if old != url:
-        print(f"[PROMOTE] {name}: {old or '(vuoto)'} -> {url}")
-        provider["current"] = url
-        changed = True
-    changed |= set_meta(provider, "last_known_good", url)
-    changed |= prune_to_current(provider, url, "PRUNE")
-    changed |= reset_pending(provider)
-    changed |= set_meta(provider, "auto_status", "ok")
-    changed |= set_meta(provider, "auto_failures", 0)
-    changed |= set_meta(provider, "auto_blocked_cycles", 0)
-    changed |= set_meta(provider, "app_validation", "search-compatible")
-    return changed
-
+# providers.json is the ONLY authority for the list of providers.
+# Removing an entry there permanently removes it from the published list;
+# no historic candidates, last-known-good or pending queue is consulted.
 def main():
     config = json.loads(PROVIDERS_FILE.read_text(encoding="utf-8"))
-    resolved = []
+    entries = config.get("providers", [])
+    if not isinstance(entries, list):
+        raise ValueError("providers deve essere una lista")
+
+    published = []
+    ids = set()
     changed = False
-
-    for provider in config.get("providers", []):
-        name = provider.get("name") or provider.get("id") or "provider"
+    for provider in entries:
+        if not isinstance(provider, dict):
+            raise ValueError("Ogni provider deve essere un oggetto JSON")
+        provider_id = str(provider.get("id", "")).strip()
         current = normalize(provider.get("current", ""))
-        last_good = normalize(provider.get("last_known_good", "")) or current
+        if not provider_id or not current or not current.startswith(("https://", "http://")):
+            raise ValueError("Provider privo di id o current URL valido")
+        if provider_id in ids:
+            raise ValueError("ID provider duplicato: " + provider_id)
+        ids.add(provider_id)
+        name = provider.get("name") or provider_id
 
-        if last_good and provider.get("last_known_good") != last_good:
-            changed |= set_meta(provider, "last_known_good", last_good)
+        # Purge all old state, even for providers still on the allowlist.
+        for key in list(provider):
+            if key.startswith("pending_") or key.startswith("auto_") or key in (
+                "last_known_good", "app_validation", "removed", "archived",
+            ):
+                del provider[key]
+                changed = True
+        if provider.get("current") != current:
+            provider["current"] = current
+            changed = True
+        if provider.get("candidates") != [current]:
+            provider["candidates"] = [current]
+            changed = True
 
-        # 1) Il current resta preferito finché funziona davvero con la ricerca Tairon.
-        current_found = None
-        current_state = "dead"
-        current_detail = "URL vuoto"
-        if current:
-            current_found, current_state, current_detail = app_search_probe(current, provider)
-            print(f"[CHECK-APP] {name}: {current} -> {current_state} ({current_detail})")
-
-        if current_found:
-            current = normalize(current_found)
-            resolved.append(current)
-            print(f"[OK-LKG] {name}: {current}")
-            changed |= promote(provider, current, name)
+        # Publish manually selected URLs even if GitHub is blocked by anti-bot.
+        # This is required to test them on Tairon; GitHub cannot confirm playback.
+        published.append(current)
+        print(f"[ALLOWLIST] {name}: {current} -> pubblicata per test")
+        winner, state, detail = app_search_probe(current, provider)
+        print(f"[CHECK-APP] {name}: {current} -> {state} ({detail})")
+        if winner:
+            winner = normalize(winner)
+            # Only update a provider when the validated redirect is recognizably
+            # the same source; do not silently adopt a different brand.
+            if winner != current and html_matches('', hostname(winner), provider):
+                print(f"[REDIRECT] {name}: {current} -> {winner}")
+                published[-1] = winner
+                provider["current"] = winner
+                provider["candidates"] = [winner]
+                changed = True
             continue
 
-        # 2) Se il current non funziona, prova prima il last-known-good noto dal dispositivo.
-        if last_good and last_good != current:
-            good_found, good_state, good_detail = app_search_probe(last_good, provider)
-            print(f"[CHECK-LKG] {name}: {last_good} -> {good_state} ({good_detail})")
-            if good_found:
-                good_found = normalize(good_found)
-                resolved.append(good_found)
-                print(f"[ROLLBACK-LKG] {name}: torno a {good_found}")
-                changed |= promote(provider, good_found, name)
-                continue
+        # Keep blocked/incompatible/offline sites visible until the USER removes
+        # them from providers.json. No pending queue, no silent disappearance.
+        if state == "blocked":
+            print(f"[KEEP-MANUAL] {name}: GitHub anti-bot; visibile per test Android")
+            continue
 
-        # V2.9 STRICT: una sorgente bloccata NON entra nel file live usato da Tairon.
-        # Resta però in providers.json e viene ricontrollata/discovery nei run successivi.
-        current_was_blocked = current_state == "blocked"
-        if current_was_blocked:
-            blocked_cycles = int(provider.get("auto_blocked_cycles", 0) or 0) + 1
-            changed |= set_meta(provider, "auto_blocked_cycles", blocked_cycles)
-            print(
-                f"[BLOCKED-EXCLUDED] {name}: {current or last_good} bloccato dal runner GitHub; "
-                "NON lo pubblico in tairon_sources.txt e provo la discovery."
-            )
-            changed |= set_meta(provider, "auto_status", "blocked")
-            changed |= set_meta(provider, "app_validation", "unknown-blocked")
-        else:
-            changed |= set_meta(provider, "auto_blocked_cycles", 0)
-
-        # 3) Discovery: un nuovo dominio NON viene promosso subito.
-        # Deve superare il test app-aware in due workflow consecutivi.
-        candidate_found = None
-        candidate_state = None
-        print(f"[DISCOVERY-APP] {name}: cerco un nuovo dominio compatibile con Tairon...")
+        # Auto-update is scoped STRICTLY to this provider ID, never the global
+        # history. Only a domain with a matching provider name and two successful
+        # app-search probes in this run may replace its configured URL.
+        print(f"[DISCOVERY] {name}: provo domini alternativi per questo provider")
         for candidate in discovery_candidates(provider):
             candidate = normalize(candidate)
-            if candidate in {current, last_good}:
+            if candidate == current:
                 continue
-            found, state, detail = app_search_probe(candidate, provider)
-            print(f"[TRY-APP] {name}: {candidate} -> {state} ({detail})")
-            if found:
-                candidate_found = normalize(found)
-                candidate_state = state
-                break
-
-        if candidate_found:
-            successes, pending_changed = note_pending(provider, candidate_found)
-            changed |= pending_changed
-            print(
-                f"[PENDING] {name}: {candidate_found} conferma "
-                f"{successes}/{PROMOTION_CONFIRMATIONS}; non sostituisco ancora il last-known-good."
-            )
-            if successes >= PROMOTION_CONFIRMATIONS:
-                resolved.append(candidate_found)
-                changed |= promote(provider, candidate_found, name)
-            else:
-                # V2.9 STRICT: finché il candidato non è confermato non pubblico
-                # né il candidato né il vecchio fallback nel file live di Tairon.
-                print(
-                    f"[PENDING-EXCLUDED] {name}: candidato non ancora confermato; "
-                    "provider temporaneamente escluso da tairon_sources.txt."
-                )
-                changed |= set_meta(provider, "auto_status", "pending")
-            continue
-
-        # Nessun candidato valido: azzera eventuale conferma pendente.
-        changed |= reset_pending(provider)
-
-        previous_failures = int(provider.get("auto_failures", 0) or 0)
-        failures = min(previous_failures + 1, FAILURES_BEFORE_OFFLINE)
-        changed |= set_meta(provider, "auto_failures", failures)
-
-        fallback = last_good or current
-        # V2.9 STRICT: qualsiasi provider non validato in questo run resta fuori
-        # da tairon_sources.txt. providers.json conserva comunque il dominio per
-        # i controlli automatici futuri.
-        if current_was_blocked:
-            print(
-                f"[LIVE-EXCLUDED] {name}: bloccato e nessun candidato valido; "
-                "escluso dal file live, ma resta monitorato."
-            )
-            changed |= set_meta(provider, "auto_status", "blocked")
-        elif fallback and failures < FAILURES_BEFORE_OFFLINE:
-            print(
-                f"[LIVE-EXCLUDED] {name}: verifica non superata "
-                f"({failures}/{FAILURES_BEFORE_OFFLINE}); {fallback} resta solo in providers.json."
-            )
-            changed |= set_meta(provider, "auto_status", "warning")
+            # Require provider identity in the host, not just in page text.
+            labels = [compact_label(provider.get("base_name", ""))]
+            labels += [compact_label(x) for x in provider.get("match_any", [])]
+            host_label = compact_label(first_label(hostname(candidate)))
+            if not host_label or not any(
+                label and (label in host_label or host_label in label)
+                for label in labels
+            ):
+                continue
+            first, first_state, _ = app_search_probe(candidate, provider)
+            if not first:
+                continue
+            second, second_state, _ = app_search_probe(candidate, provider)
+            if not second or normalize(first) != normalize(second):
+                continue
+            replacement = normalize(first)
+            print(f"[AUTO-UPDATE] {name}: {current} -> {replacement} (due verifiche)")
+            published[-1] = replacement
+            provider["current"] = replacement
+            provider["candidates"] = [replacement]
+            changed = True
+            break
         else:
-            print(
-                f"[OFFLINE] {name}: {FAILURES_BEFORE_OFFLINE} controlli consecutivi falliti "
-                "e nessun candidato app-aware confermato; escluso dal file live."
-            )
-            changed |= set_meta(provider, "auto_status", "offline")
+            print(f"[KEEP-MANUAL] {name}: {state}; resta pubblicata fino a rimozione manuale")
 
-    OUTPUT_FILE.write_text(
-        "\n".join(dedupe(resolved)) + ("\n" if resolved else ""),
-        encoding="utf-8",
-    )
-
+    # Atomic rewrite: never append to an old list. Removed entries cannot survive.
+    contents = "\n".join(dedupe(published)) + ("\n" if published else "")
+    OUTPUT_FILE.write_text(contents, encoding="utf-8")
     if changed:
-        PROVIDERS_FILE.write_text(
-            json.dumps(config, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
-
+        PROVIDERS_FILE.write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"[LIVE-REBUILT] {len(dedupe(published))} URL; nessuna sorgente sospesa o archiviata")
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())
