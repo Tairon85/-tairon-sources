@@ -1,66 +1,32 @@
 {
   "providers": [
     {
-      "id": "altadefinizionex",
-      "name": "AltaDefinizioneX",
-      "base_name": "altadefinizionex",
-      "current": "https://altadefinizionex.surf",
-      "last_known_good": "https://altadefinizionex.surf",
+      "id": "cineblog001",
+      "name": "CineBlog001",
+      "base_name": "cineblog001",
+      "current": "https://cineblog001.tattoo",
       "candidates": [
-        "https://altadefinizionex.surf"
+        "https://cineblog001.tattoo"
       ],
       "match_any": [
-        "altadefinizione",
-        "altadefinizionex"
-      ],
-      "pending_candidate": "",
-      "pending_successes": 0,
-      "auto_status": "ok",
-      "auto_failures": 0,
-      "auto_blocked_cycles": 0,
-      "app_validation": "search-compatible"
+        "cineblog001",
+        "cineblog",
+        "cb01"
+      ]
     },
     {
-      "id": "guardaseriex",
-      "name": "GuardaSerieX",
-      "base_name": "guardaseriex",
-      "current": "https://guardaseriex.click",
-      "last_known_good": "https://guardaseriex.click",
+      "id": "tantifilm",
+      "name": "TantiFilm",
+      "base_name": "tanti-film",
+      "current": "https://tanti-film.work",
       "candidates": [
-        "https://guardaseriex.click"
+        "https://tanti-film.work"
       ],
       "match_any": [
-        "guardaserie",
-        "guardaseriex"
-      ],
-      "auto_blocked_cycles": 3,
-      "auto_status": "blocked",
-      "app_validation": "unknown-blocked",
-      "pending_candidate": "",
-      "pending_successes": 0,
-      "auto_failures": 2
-    },
-    {
-      "id": "ilgeniodellostreaming",
-      "name": "Il Genio dello Streaming",
-      "base_name": "il-geniodellostreaming",
-      "current": "https://il-geniodellostreaming.vip",
-      "last_known_good": "https://il-geniodellostreaming.vip",
-      "candidates": [
-        "https://il-geniodellostreaming.vip"
-      ],
-      "match_any": [
-        "genio dello streaming",
-        "il-geniodellostreaming",
-        "ilgeniodellostreaming",
-        "geniodellostreaming"
-      ],
-      "auto_blocked_cycles": 3,
-      "auto_status": "blocked",
-      "app_validation": "unknown-blocked",
-      "pending_candidate": "",
-      "pending_successes": 0,
-      "auto_failures": 2
+        "tanti-film",
+        "tantifilm",
+        "tanti film"
+      ]
     }
   ]
 }
