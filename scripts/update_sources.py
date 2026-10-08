@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Tairon Sources Auto Update V2.8 - last-known-good + 2-cycle promotion
+# Tairon Sources Auto Update V2.9 STRICT - last-known-good + 2-cycle promotion
 import html as html_lib
 import json
 import re
@@ -626,19 +626,20 @@ def main():
                 changed |= promote(provider, good_found, name)
                 continue
 
-        # Se GitHub è bloccato sul current/last-good, non lo sostituiamo alla cieca.
-        if current_state == "blocked":
+        # V2.9 STRICT: una sorgente bloccata NON entra nel file live usato da Tairon.
+        # Resta però in providers.json e viene ricontrollata/discovery nei run successivi.
+        current_was_blocked = current_state == "blocked"
+        if current_was_blocked:
             blocked_cycles = int(provider.get("auto_blocked_cycles", 0) or 0) + 1
             changed |= set_meta(provider, "auto_blocked_cycles", blocked_cycles)
-            if current:
-                resolved.append(current)
-                changed |= prune_to_current(provider, current, "PRUNE-BLOCKED")
-            print(f"[BLOCKED-LKG] {name}: runner GitHub bloccato; mantengo {current or last_good}.")
+            print(
+                f"[BLOCKED-EXCLUDED] {name}: {current or last_good} bloccato dal runner GitHub; "
+                "NON lo pubblico in tairon_sources.txt e provo la discovery."
+            )
             changed |= set_meta(provider, "auto_status", "blocked")
             changed |= set_meta(provider, "app_validation", "unknown-blocked")
-            continue
-
-        changed |= set_meta(provider, "auto_blocked_cycles", 0)
+        else:
+            changed |= set_meta(provider, "auto_blocked_cycles", 0)
 
         # 3) Discovery: un nuovo dominio NON viene promosso subito.
         # Deve superare il test app-aware in due workflow consecutivi.
@@ -667,11 +668,12 @@ def main():
                 resolved.append(candidate_found)
                 changed |= promote(provider, candidate_found, name)
             else:
-                # Finché il candidato non è confermato, mantieni il last-known-good/current live.
-                fallback = last_good or current
-                if fallback:
-                    resolved.append(fallback)
-                    changed |= prune_to_current(provider, fallback, "PRUNE-PENDING")
+                # V2.9 STRICT: finché il candidato non è confermato non pubblico
+                # né il candidato né il vecchio fallback nel file live di Tairon.
+                print(
+                    f"[PENDING-EXCLUDED] {name}: candidato non ancora confermato; "
+                    "provider temporaneamente escluso da tairon_sources.txt."
+                )
                 changed |= set_meta(provider, "auto_status", "pending")
             continue
 
@@ -683,17 +685,25 @@ def main():
         changed |= set_meta(provider, "auto_failures", failures)
 
         fallback = last_good or current
-        if fallback and failures < FAILURES_BEFORE_OFFLINE:
-            resolved.append(fallback)
+        # V2.9 STRICT: qualsiasi provider non validato in questo run resta fuori
+        # da tairon_sources.txt. providers.json conserva comunque il dominio per
+        # i controlli automatici futuri.
+        if current_was_blocked:
             print(
-                f"[KEEP-LKG] {name}: nessun nuovo dominio confermato "
-                f"({failures}/{FAILURES_BEFORE_OFFLINE}); mantengo {fallback}."
+                f"[LIVE-EXCLUDED] {name}: bloccato e nessun candidato valido; "
+                "escluso dal file live, ma resta monitorato."
+            )
+            changed |= set_meta(provider, "auto_status", "blocked")
+        elif fallback and failures < FAILURES_BEFORE_OFFLINE:
+            print(
+                f"[LIVE-EXCLUDED] {name}: verifica non superata "
+                f"({failures}/{FAILURES_BEFORE_OFFLINE}); {fallback} resta solo in providers.json."
             )
             changed |= set_meta(provider, "auto_status", "warning")
         else:
             print(
                 f"[OFFLINE] {name}: {FAILURES_BEFORE_OFFLINE} controlli consecutivi falliti "
-                "e nessun candidato app-aware confermato."
+                "e nessun candidato app-aware confermato; escluso dal file live."
             )
             changed |= set_meta(provider, "auto_status", "offline")
 
