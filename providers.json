@@ -18,9 +18,9 @@
       "id": "guardaserie",
       "name": "GuardaSerie",
       "base_name": "guardaserie",
-      "current": "https://guardaseriex.click/",
+      "current": "https://guardaseriex.click",
       "candidates": [
-        "https://guardaseriex.click/"
+        "https://guardaseriex.click"
       ],
       "match_any": [
         "guardaseriex",
