@@ -4,9 +4,9 @@
       "id": "guardaserie",
       "name": "GuardaSerie",
       "base_name": "guardaserie",
-      "current": "https://guardaseriex.click",
+      "current": "https://guardaseriex.click/",
       "candidates": [
-        "https://guardaseriex.click"
+        "https://guardaseriex.click/"
       ],
       "match_any": [
         "guardaseriex",
@@ -14,16 +14,17 @@
       ]
     },
     {
-      "id": "filmsenzalimiti",
-      "name": "FilmSenzaLimiti",
-      "base_name": "filmsenzalimiti",
-      "current": "https://filmsenzalimiti.study",
+      "id": "casacinema",
+      "name": "Casa Cinema",
+      "base_name": "casacinema",
+      "current": "https://casa-cinema.boats/",
       "candidates": [
-        "https://filmsenzalimiti.study"
+        "https://casa-cinema.boats/"
       ],
       "match_any": [
-        "filmsenzalimiti",
-        "film senza limiti"
+        "casa-cinema",
+        "casacinema",
+        "casa cinema"
       ]
     }
   ]
