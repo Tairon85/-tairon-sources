@@ -1,30 +1,29 @@
 {
   "providers": [
     {
-      "id": "tantifilm",
-      "name": "TantiFilm",
-      "base_name": "tanti-film",
-      "current": "https://tanti-film.work",
-      "candidates": [
-        "https://tanti-film.work"
-      ],
-      "match_any": [
-        "tanti-film",
-        "tantifilm",
-        "tanti film"
-      ]
-    },
-    {
       "id": "guardaserie",
       "name": "GuardaSerie",
       "base_name": "guardaserie",
-      "current": "https://guardaseriex.click",
+      "current": "https://guardaseriex.click/",
       "candidates": [
-        "https://guardaseriex.click"
+        "https://guardaseriex.click/"
       ],
       "match_any": [
         "guardaseriex",
         "guardaserie"
+      ]
+    },
+    {
+      "id": "filmsenzalimiti",
+      "name": "FilmSenzaLimiti",
+      "base_name": "filmsenzalimiti",
+      "current": "https://filmsenzalimiti.study/",
+      "candidates": [
+        "https://filmsenzalimiti.study/"
+      ],
+      "match_any": [
+        "filmsenzalimiti",
+        "film senza limiti"
       ]
     }
   ]
