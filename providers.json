@@ -1,20 +1,6 @@
 {
   "providers": [
     {
-      "id": "cineblog001",
-      "name": "CineBlog001",
-      "base_name": "cineblog001",
-      "current": "https://cineblog001.tattoo",
-      "candidates": [
-        "https://cineblog001.tattoo"
-      ],
-      "match_any": [
-        "cineblog001",
-        "cineblog",
-        "cb01"
-      ]
-    },
-    {
       "id": "tantifilm",
       "name": "TantiFilm",
       "base_name": "tanti-film",
@@ -26,6 +12,19 @@
         "tanti-film",
         "tantifilm",
         "tanti film"
+      ]
+    },
+    {
+      "id": "guardaserie",
+      "name": "GuardaSerie",
+      "base_name": "guardaserie",
+      "current": "https://guardaseriex.click/",
+      "candidates": [
+        "https://guardaseriex.click/"
+      ],
+      "match_any": [
+        "guardaseriex",
+        "guardaserie"
       ]
     }
   ]
