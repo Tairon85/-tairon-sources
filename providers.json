@@ -1,12 +1,31 @@
 {
   "providers": [
     {
-      "name": "Casa Cinema",
-      "url": "https://casa-cinema.boats/"
+      "id": "guardaserie",
+      "name": "GuardaSerie",
+      "base_name": "guardaserie",
+      "current": "https://guardaseriex.click/",
+      "candidates": [
+        "https://guardaseriex.click/"
+      ],
+      "match_any": [
+        "guardaseriex",
+        "guardaserie"
+      ]
     },
     {
-      "name": "GuardaSerie",
-      "url": "https://guardaseriex.click/"
+      "id": "casacinema",
+      "name": "Casa Cinema",
+      "base_name": "casacinema",
+      "current": "https://casa-cinema.boats/",
+      "candidates": [
+        "https://casa-cinema.boats/"
+      ],
+      "match_any": [
+        "casa-cinema",
+        "casacinema",
+        "casa cinema"
+      ]
     }
   ]
 }
