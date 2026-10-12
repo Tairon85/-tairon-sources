@@ -1,44 +1,12 @@
 {
   "providers": [
     {
-      "id": "guardaserie",
-      "name": "GuardaSerie",
-      "base_name": "guardaserie",
-      "current": "https://guardaseriex.click",
-      "candidates": [
-        "https://guardaseriex.click"
-      ],
-      "match_any": [
-        "guardaseriex",
-        "guardaserie"
-      ]
-    },
-    {
-      "id": "casacinema",
       "name": "Casa Cinema",
-      "base_name": "casacinema",
-      "current": "https://casa-cinema.boats",
-      "candidates": [
-        "https://casa-cinema.boats"
-      ],
-      "match_any": [
-        "casa-cinema",
-        "casacinema",
-        "casa cinema"
-      ]
+      "url": "https://casa-cinema.boats/"
     },
     {
-      "id": "altadefinizione",
-      "name": "AltaDefinizione",
-      "base_name": "altadefinizione",
-      "current": "https://altadefinizionew.casa",
-      "candidates": [
-        "https://altadefinizionew.casa"
-      ],
-      "match_any": [
-        "altadefinizionex",
-        "altadefinizione"
-      ]
+      "name": "GuardaSerie",
+      "url": "https://guardaseriex.click/"
     }
   ]
 }
