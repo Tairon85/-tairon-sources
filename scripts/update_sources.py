@@ -38,8 +38,9 @@ BLOCK_MARKERS = (
     "verify you are human",
     "verifica di essere umano",
     "attention required",
-    "cloudflare",
-    "captcha",
+    "complete the captcha",
+    "captcha required",
+    "completa il captcha",
     "access denied",
     "too many requests",
     "you have been blocked",
@@ -152,11 +153,39 @@ def html_matches(text: str, host: str, provider: dict) -> bool:
     return bool(markers) and any(marker in haystack for marker in markers)
 
 
+class VisiblePageParser(HTMLParser):
+    """Read page content, not script/configuration names or CDN URLs."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.ignored = 0
+        self.parts = []
+        self.challenge_form = False
+
+    def handle_starttag(self, tag, attrs):
+        tag = tag.lower()
+        if tag in ("script", "style", "noscript"):
+            self.ignored += 1
+        if not self.ignored:
+            attrs = dict(attrs)
+            if attrs.get("id", "").lower() in ("challenge-form", "challenge-running"):
+                self.challenge_form = True
+
+    def handle_endtag(self, tag):
+        if tag.lower() in ("script", "style", "noscript") and self.ignored:
+            self.ignored -= 1
+
+    def handle_data(self, data):
+        if not self.ignored:
+            self.parts.append(data)
+
+
 def looks_blocked(status_code: int, text: str) -> bool:
-    sample = (text or "")[:120000].lower()
     if status_code in (401, 403, 429, 503):
         return True
-    return any(marker in sample for marker in BLOCK_MARKERS)
+    parser = VisiblePageParser()
+    parser.feed((text or "")[:500000])
+    sample = re.sub(r"\s+", " ", " ".join(parser.parts)).lower()
+    return parser.challenge_form or any(marker in sample for marker in BLOCK_MARKERS)
 
 
 class SearchPageParser(HTMLParser):
