@@ -4,9 +4,9 @@
       "id": "guardaserie",
       "name": "GuardaSerie",
       "base_name": "guardaserie",
-      "current": "https://guardaseriex.wiki",
+      "current": "https://guardaseriex.icu",
       "candidates": [
-        "https://guardaseriex.wiki"
+        "https://guardaseriex.icu"
       ],
       "match_any": [
         "guardaseriex",
