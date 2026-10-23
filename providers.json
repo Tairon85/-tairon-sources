@@ -26,6 +26,19 @@
         "casacinema",
         "casa cinema"
       ]
+    },
+    {
+      "id": "filmsenzalimiti",
+      "name": "FilmSenzaLimiti",
+      "base_name": "filmsenzalimiti",
+      "current": "https://filmsenzalimiti.study",
+      "candidates": [
+        "https://filmsenzalimiti.study"
+      ],
+      "match_any": [
+        "filmsenzalimiti",
+        "film senza limiti"
+      ]
     }
   ]
 }
