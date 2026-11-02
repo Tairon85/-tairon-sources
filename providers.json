@@ -4,9 +4,9 @@
       "id": "guardaserie",
       "name": "GuardaSerie",
       "base_name": "guardaserie",
-      "current": "https://guardaseriex.best",
+      "current": "https://guardaseriex.art",
       "candidates": [
-        "https://guardaseriex.best"
+        "https://guardaseriex.art"
       ],
       "match_any": [
         "guardaseriex",
@@ -17,9 +17,9 @@
       "id": "casacinema",
       "name": "Casa Cinema",
       "base_name": "casacinema",
-      "current": "https://casa-cinema.boats",
+      "current": "https://casa-cinema.top",
       "candidates": [
-        "https://casa-cinema.boats"
+        "https://casa-cinema.top"
       ],
       "match_any": [
         "casa-cinema",
