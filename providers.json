@@ -14,20 +14,6 @@
       ]
     },
     {
-      "id": "casacinema",
-      "name": "Casa Cinema",
-      "base_name": "casacinema",
-      "current": "https://casa-cinema.top",
-      "candidates": [
-        "https://casa-cinema.top"
-      ],
-      "match_any": [
-        "casa-cinema",
-        "casacinema",
-        "casa cinema"
-      ]
-    },
-    {
       "id": "filmsenzalimiti",
       "name": "FilmSenzaLimiti",
       "base_name": "filmsenzalimiti",
