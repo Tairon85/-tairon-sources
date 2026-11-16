@@ -4,9 +4,9 @@
       "id": "guardaserie",
       "name": "GuardaSerie",
       "base_name": "guardaserie",
-      "current": "https://guardaseriex.work",
+      "current": "https://guardaseriex.lol",
       "candidates": [
-        "https://guardaseriex.work"
+        "https://guardaseriex.lol"
       ],
       "match_any": [
         "guardaseriex",
