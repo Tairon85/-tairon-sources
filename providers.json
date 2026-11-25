@@ -1,6 +1,18 @@
 {
   "providers": [
     {
+      "id": "guardaseriex-lol",
+      "name": "GuardaSerie (dominio alternativo)",
+      "base_name": "guardaseriex",
+      "current": "https://guardaseriex.lol",
+      "candidates": [
+        "https://guardaseriex.lol"
+      ],
+      "match_any": [
+        "guardaseriex"
+      ]
+    },
+    {
       "id": "guardaserie",
       "name": "GuardaSerie",
       "base_name": "guardaserie",
@@ -24,6 +36,174 @@
       "match_any": [
         "filmsenzalimiti",
         "film senza limiti"
+      ]
+    },
+    {
+      "id": "streamingunity",
+      "name": "StreamingUnity",
+      "base_name": "streamingunity",
+      "current": "https://streamingunity.day",
+      "candidates": [
+        "https://streamingunity.day"
+      ],
+      "match_any": [
+        "streamingunity"
+      ]
+    },
+    {
+      "id": "cb01one",
+      "name": "CB01One",
+      "base_name": "cb01one",
+      "current": "https://cb01one.download",
+      "candidates": [
+        "https://cb01one.download"
+      ],
+      "match_any": [
+        "cb01one"
+      ]
+    },
+    {
+      "id": "eurostreamings",
+      "name": "EuroStreamings",
+      "base_name": "eurostreamings",
+      "current": "https://eurostreamings.cyou",
+      "candidates": [
+        "https://eurostreamings.cyou"
+      ],
+      "match_any": [
+        "eurostreamings"
+      ]
+    },
+    {
+      "id": "eurostreaming",
+      "name": "EuroStreaming",
+      "base_name": "eurostreaming",
+      "current": "https://eurostreaming.design",
+      "candidates": [
+        "https://eurostreaming.design"
+      ],
+      "match_any": [
+        "eurostreaming"
+      ]
+    },
+    {
+      "id": "altadefinizionex",
+      "name": "AltadefinizioneX",
+      "base_name": "altadefinizionex",
+      "current": "https://altadefinizionex.ink",
+      "candidates": [
+        "https://altadefinizionex.ink"
+      ],
+      "match_any": [
+        "altadefinizionex"
+      ]
+    },
+    {
+      "id": "animeworld",
+      "name": "AnimeWorld",
+      "base_name": "animeworld",
+      "current": "https://www.animeworld.ac",
+      "candidates": [
+        "https://www.animeworld.ac"
+      ],
+      "match_any": [
+        "animeworld"
+      ]
+    },
+    {
+      "id": "animeunity",
+      "name": "AnimeUnity",
+      "base_name": "animeunity",
+      "current": "https://www.animeunity.so",
+      "candidates": [
+        "https://www.animeunity.so"
+      ],
+      "match_any": [
+        "animeunity"
+      ]
+    },
+    {
+      "id": "animesaturn",
+      "name": "AnimeSaturn",
+      "base_name": "animesaturn",
+      "current": "https://www.animesaturn.net",
+      "candidates": [
+        "https://www.animesaturn.net"
+      ],
+      "match_any": [
+        "animesaturn"
+      ]
+    },
+    {
+      "id": "streamingcommunityz",
+      "name": "StreamingCommunityZ",
+      "base_name": "streamingcommunityz",
+      "current": "https://streamingcommunityz.day",
+      "candidates": [
+        "https://streamingcommunityz.day"
+      ],
+      "match_any": [
+        "streamingcommunityz"
+      ]
+    },
+    {
+      "id": "1337x",
+      "name": "1337x",
+      "base_name": "1337x",
+      "current": "https://1337x.to",
+      "candidates": [
+        "https://1337x.to"
+      ],
+      "match_any": [
+        "1337x"
+      ]
+    },
+    {
+      "id": "rargb",
+      "name": "RARBG",
+      "base_name": "rargb",
+      "current": "https://rargb.to",
+      "candidates": [
+        "https://rargb.to"
+      ],
+      "match_any": [
+        "rargb"
+      ]
+    },
+    {
+      "id": "icv-api",
+      "name": "ICV API",
+      "base_name": "icv-api",
+      "current": "https://icv-api.vercel.app",
+      "candidates": [
+        "https://icv-api.vercel.app"
+      ],
+      "match_any": [
+        "icv-api"
+      ]
+    },
+    {
+      "id": "toastflix",
+      "name": "ToastFlix",
+      "base_name": "toastflix",
+      "current": "https://toastflix.stremio-italia.eu",
+      "candidates": [
+        "https://toastflix.stremio-italia.eu"
+      ],
+      "match_any": [
+        "toastflix"
+      ]
+    },
+    {
+      "id": "i5hs",
+      "name": "i5hs",
+      "base_name": "i5hs",
+      "current": "https://i5hs.k9vo.com",
+      "candidates": [
+        "https://i5hs.k9vo.com"
+      ],
+      "match_any": [
+        "i5hs"
       ]
     }
   ]
