@@ -4,9 +4,9 @@
       "id": "guardaseriex-lol",
       "name": "GuardaSerie (dominio alternativo)",
       "base_name": "guardaseriex",
-      "current": "https://guardaseriex.lol",
+      "current": "https://guardaseriex.help",
       "candidates": [
-        "https://guardaseriex.lol"
+        "https://guardaseriex.help"
       ],
       "match_any": [
         "guardaseriex"
@@ -138,9 +138,9 @@
       "id": "streamingcommunityz",
       "name": "StreamingCommunityZ",
       "base_name": "streamingcommunityz",
-      "current": "https://streamingcommunityz.day",
+      "current": "https://streamingcommunityz.mov",
       "candidates": [
-        "https://streamingcommunityz.day"
+        "https://streamingcommunityz.mov"
       ],
       "match_any": [
         "streamingcommunityz"
