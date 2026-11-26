@@ -63,42 +63,6 @@
       ]
     },
     {
-      "id": "eurostreamings",
-      "name": "EuroStreamings",
-      "base_name": "eurostreamings",
-      "current": "https://eurostreamings.cyou",
-      "candidates": [
-        "https://eurostreamings.cyou"
-      ],
-      "match_any": [
-        "eurostreamings"
-      ]
-    },
-    {
-      "id": "eurostreaming",
-      "name": "EuroStreaming",
-      "base_name": "eurostreaming",
-      "current": "https://eurostreaming.design",
-      "candidates": [
-        "https://eurostreaming.design"
-      ],
-      "match_any": [
-        "eurostreaming"
-      ]
-    },
-    {
-      "id": "altadefinizionex",
-      "name": "AltadefinizioneX",
-      "base_name": "altadefinizionex",
-      "current": "https://altadefinizionex.ink",
-      "candidates": [
-        "https://altadefinizionex.ink"
-      ],
-      "match_any": [
-        "altadefinizionex"
-      ]
-    },
-    {
       "id": "animeworld",
       "name": "AnimeWorld",
       "base_name": "animeworld",
@@ -108,18 +72,6 @@
       ],
       "match_any": [
         "animeworld"
-      ]
-    },
-    {
-      "id": "animeunity",
-      "name": "AnimeUnity",
-      "base_name": "animeunity",
-      "current": "https://www.animeunity.so",
-      "candidates": [
-        "https://www.animeunity.so"
-      ],
-      "match_any": [
-        "animeunity"
       ]
     },
     {
@@ -144,30 +96,6 @@
       ],
       "match_any": [
         "streamingcommunityz"
-      ]
-    },
-    {
-      "id": "1337x",
-      "name": "1337x",
-      "base_name": "1337x",
-      "current": "https://1337x.to",
-      "candidates": [
-        "https://1337x.to"
-      ],
-      "match_any": [
-        "1337x"
-      ]
-    },
-    {
-      "id": "rargb",
-      "name": "RARBG",
-      "base_name": "rargb",
-      "current": "https://rargb.to",
-      "candidates": [
-        "https://rargb.to"
-      ],
-      "match_any": [
-        "rargb"
       ]
     },
     {
